@@ -1,0 +1,14 @@
+package com.myrni.service;
+
+import java.util.List;
+
+import com.myrni.requestVo.OrganizationEducationInstitutionDetailsRequestVO;
+import com.myrni.responsVO.OrganizationEducationInstitutionDetailsResponsVO;
+
+public interface OrganizationEducationInstitutionDetailsService {
+	
+	public OrganizationEducationInstitutionDetailsResponsVO saveOrganizationEducationInstitutionDetails(OrganizationEducationInstitutionDetailsRequestVO organizationEducationInstitutionDetailsRequestVO);
+	
+	public List<OrganizationEducationInstitutionDetailsResponsVO> fatchAllOrgDetails();
+
+}
