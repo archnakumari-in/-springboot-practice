@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.myrni.entity.StudentEO;
 import com.myrni.service.StudentService;
 
+// this is for testing 
 @RestController
 @RequestMapping("/student")
 public class StudentController {
