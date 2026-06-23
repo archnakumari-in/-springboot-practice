@@ -2,9 +2,9 @@ package com.myrni.serviceImpl;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+import com.myrni.Enum.Role;
 import org.springframework.stereotype.Service;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import com.myrni.entity.UserEO;
 import com.myrni.repository.UserRepository;
 import com.myrni.requestVo.UserRequestVO;
@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public UserResponseVO registerUser(UserRequestVO requestVO) {
@@ -35,10 +36,11 @@ public class UserServiceImpl implements UserService {
 		userEO.setFullName(requestVO.getFullName());
 		userEO.setEmail(requestVO.getEmail());
 		userEO.setMobileNo(requestVO.getMobileNo());
-		userEO.setPassword(requestVO.getPassword());
-		userEO.setAddress(requestVO.getAddress());
-		userEO.setRole("CUSTOMER");
 
+		userEO.setPassword(passwordEncoder.encode(requestVO.getPassword()));
+
+		userEO.setAddress(requestVO.getAddress());
+		userEO.setRole(Role.CUSTOMER);
 		userEO = userRepository.save(userEO);
 
 		return convertToResponse(userEO);
@@ -67,8 +69,7 @@ public class UserServiceImpl implements UserService {
 		responseVO.setEmail(userEO.getEmail());
 		responseVO.setMobileNo(userEO.getMobileNo());
 		responseVO.setAddress(userEO.getAddress());
-		responseVO.setRole(userEO.getRole());
-
+		responseVO.setRole(userEO.getRole().name());
 		return responseVO;
 	}
 

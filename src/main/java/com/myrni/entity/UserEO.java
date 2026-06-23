@@ -1,11 +1,7 @@
 package com.myrni.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.myrni.Enum.Role;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -13,25 +9,24 @@ import lombok.Data;
 @Data
 public class UserEO {
 
-	@Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long userId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userId;
 
-	    @Column(nullable = false)
-	    private String fullName;
+    @Column(nullable = false)
+    private String fullName;
 
-	    @Column(nullable = false, unique = true)
-	    private String email;
+    @Column(nullable = false, unique = true)
+    private String email;
 
-	    @Column(nullable = false, unique = true)
-	    private String mobileNo;
+    @Column(nullable = false, unique = true)
+    private String mobileNo;
 
-	    @Column(nullable = false)
-	    private String password;
+    @Column(nullable = false)
+    private String password;
 
-	    private String address;
+    private String address;
 
-	    private String role;
-	}
-
-
+    @Enumerated(EnumType.STRING)
+    private Role role;
+}
