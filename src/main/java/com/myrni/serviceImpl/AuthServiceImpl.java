@@ -1,5 +1,6 @@
 package com.myrni.serviceImpl;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.myrni.entity.UserEO;
@@ -17,13 +18,20 @@ public class AuthServiceImpl implements AuthService {
 
 	private final UserRepository userRepository;
 
+	private final PasswordEncoder passwordEncoder;
+
 	@Override
 	public LoginResponseVO login(LoginRequestVO requestVO) {
 
 		UserEO user = userRepository.findByEmail(requestVO.getEmail())
 				.orElseThrow(() -> new RuntimeException("Invalid email"));
 
-		if (!user.getPassword().equals(requestVO.getPassword())) {
+//		if (!user.getPassword().equals(requestVO.getPassword())) {
+//
+//			throw new RuntimeException("Invalid password");
+//		}
+
+		if (!passwordEncoder.matches(requestVO.getPassword(), user.getPassword())) {
 
 			throw new RuntimeException("Invalid password");
 		}

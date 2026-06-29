@@ -3,9 +3,9 @@ package com.myrni.requestVo;
 import lombok.Data;
 
 @Data
-public class ApplyCouponRequestVO {
+public class FavoriteRequestVO {
 
     private Long userId;
 
-    private String couponCode;
+    private Long restaurantId;
 }

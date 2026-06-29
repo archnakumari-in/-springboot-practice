@@ -2,13 +2,17 @@ package com.myrni.serviceImpl;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import com.myrni.Enum.Role;
-import org.springframework.stereotype.Service;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.myrni.Enum.Role;
 import com.myrni.entity.UserEO;
 import com.myrni.repository.UserRepository;
+import com.myrni.requestVo.EmailRequestVO;
 import com.myrni.requestVo.UserRequestVO;
 import com.myrni.responsVO.UserResponseVO;
+import com.myrni.service.NotificationService;
 import com.myrni.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -18,7 +22,8 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
-	private final PasswordEncoder passwordEncoder;
+	//private final PasswordEncoder passwordEncoder;
+	private final NotificationService notificationService;
 
 	@Override
 	public UserResponseVO registerUser(UserRequestVO requestVO) {
@@ -37,11 +42,20 @@ public class UserServiceImpl implements UserService {
 		userEO.setEmail(requestVO.getEmail());
 		userEO.setMobileNo(requestVO.getMobileNo());
 
-		userEO.setPassword(passwordEncoder.encode(requestVO.getPassword()));
-
+		userEO.setPassword(requestVO.getPassword());
 		userEO.setAddress(requestVO.getAddress());
 		userEO.setRole(Role.CUSTOMER);
 		userEO = userRepository.save(userEO);
+
+//		EmailRequestVO email = new EmailRequestVO();
+//
+//		email.setToEmail(userEO.getEmail());
+//
+//		email.setSubject("Welcome to MyRNI");
+//
+//		email.setMessage("Dear " + userEO.getFullName() + ", Welcome to MyRNI.");
+//
+//		notificationService.sendEmail(email);
 
 		return convertToResponse(userEO);
 	}

@@ -14,9 +14,11 @@ import com.myrni.entity.UserEO;
 import com.myrni.repository.CartRepository;
 import com.myrni.repository.OrderRepository;
 import com.myrni.repository.UserRepository;
+import com.myrni.requestVo.EmailRequestVO;
 import com.myrni.requestVo.PlaceOrderRequestVO;
 import com.myrni.responsVO.OrderItemResponseVO;
 import com.myrni.responsVO.OrderResponseVO;
+import com.myrni.service.NotificationService;
 import com.myrni.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ public class OrderServiceImpl implements OrderService {
 	private final UserRepository userRepository;
 	private final CartRepository cartRepository;
 	private final OrderRepository orderRepository;
+	private final NotificationService notificationService;
 
 	@Override
 	public OrderResponseVO placeOrder(PlaceOrderRequestVO requestVO) {
@@ -65,6 +68,16 @@ public class OrderServiceImpl implements OrderService {
 		order.setOrderItems(orderItems);
 
 		order = orderRepository.save(order);
+
+		// Send Email
+		EmailRequestVO email = new EmailRequestVO();
+		email.setToEmail(user.getEmail());
+		email.setSubject("Order Placed Successfully");
+		email.setMessage("Dear " + user.getFullName() + ", Your order #" + order.getOrderId()
+				+ " has been placed successfully.");
+
+		notificationService.sendEmail(email);
+
 		// Clear Cart
 		cart.getCartItems().clear();
 		cart.setTotalAmount(0.0);
